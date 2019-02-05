@@ -1,10 +1,11 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client {
 
     public static void main(String[] args){
-        String serverName = "127.0.0.1";
+        String serverName = "10.253.28.159";
         int port = 5555;
         try{
             System.out.println("Connecting to " + serverName + " on port " + port);
@@ -14,11 +15,20 @@ public class Client {
             OutputStream outToServer = client.getOutputStream();
             DataOutputStream out = new DataOutputStream(outToServer);
 
-            out.writeUTF("Hello from " + client.getLocalSocketAddress());
+            System.out.println("Type in city or country: ");
+            Scanner sc = new Scanner(System.in);
+            String s = sc.nextLine();
+
+            //send to server
+            out.writeUTF(s);
             InputStream inFromServer = client.getInputStream();
             DataInputStream in = new DataInputStream(inFromServer);
 
+            //Get from server
             System.out.println("Server says " + in.readUTF());
+
+
+            //Close port
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
